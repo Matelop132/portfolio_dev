@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://portfolio.example.com/sitemap.xml
+
+# Disallow admin/private areas (if any)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all search engines to crawl
+Crawl-delay: 1 
