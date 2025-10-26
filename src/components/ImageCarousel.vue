@@ -44,20 +44,20 @@
       <button
         @click="previousImage"
         v-if="images.length > 1"
-        class="p-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl rounded-full shadow-2xl hover:shadow-white/25 dark:hover:shadow-primary-500/25 transition-all duration-300 hover:scale-110 border border-white/40 dark:border-gray-700/40"
+        class="p-4 bg-white/98 dark:bg-gray-900/98 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-105 border border-white/50 dark:border-gray-700/50"
         :disabled="images.length <= 1"
       >
-        <span class="text-2xl text-gray-900 dark:text-white transition-transform duration-300 font-bold">‹</span>
+        <span class="text-2xl text-gray-900 dark:text-white font-bold">‹</span>
       </button>
 
       <!-- Bouton suivant -->
       <button
         @click="nextImage"
         v-if="images.length > 1"
-        class="p-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-2xl rounded-full shadow-2xl hover:shadow-white/25 dark:hover:shadow-primary-500/25 transition-all duration-300 hover:scale-110 border border-white/40 dark:border-gray-700/40"
+        class="p-4 bg-white/98 dark:bg-gray-900/98 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-105 border border-white/50 dark:border-gray-700/50"
         :disabled="images.length <= 1"
       >
-        <span class="text-2xl text-gray-900 dark:text-white transition-transform duration-300 font-bold">›</span>
+        <span class="text-2xl text-gray-900 dark:text-white font-bold">›</span>
       </button>
     </div>
 
@@ -68,10 +68,10 @@
         :key="index"
         @click="setCurrentIndex(index)"
         :class="[
-          'transition-all duration-400 backdrop-blur-2xl border border-white/50 rounded-full overflow-hidden',
+          'transition-all duration-300 border border-white/50 rounded-full overflow-hidden',
           index === currentIndex 
-            ? 'w-8 h-3 bg-white shadow-xl shadow-white/30 scale-110' 
-            : 'w-3 h-3 bg-white/60 hover:bg-white/80 hover:scale-125'
+            ? 'w-8 h-3 bg-white shadow-lg scale-105' 
+            : 'w-3 h-3 bg-white/70 hover:bg-white/90 hover:scale-110'
         ]"
       >
         <div 
@@ -82,7 +82,7 @@
     </div>
 
     <!-- Badge compteur stylisé -->
-    <div v-if="images.length > 1" class="absolute top-6 right-6 px-4 py-2 bg-black/60 dark:bg-white/10 backdrop-blur-2xl rounded-2xl text-white dark:text-white text-sm font-bold opacity-0 group-hover:opacity-100 transition-all duration-500 border border-white/20">
+    <div v-if="images.length > 1" class="absolute top-6 right-6 px-4 py-2 bg-black/80 dark:bg-gray-900/90 rounded-2xl text-white text-sm font-bold opacity-0 group-hover:opacity-100 transition-all duration-500 border border-white/20">
       <span class="text-primary-400">{{ currentIndex + 1 }}</span> / {{ images.length }}
     </div>
   </div>
@@ -202,14 +202,18 @@ img {
   backface-visibility: hidden;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast;
-  will-change: transform, filter, opacity;
+  /* will-change supprimé pour performance scroll */
 }
 
 /* Styles pour les boutons de contrôle - anti-freeze */
 button {
-  will-change: transform, box-shadow;
   transform: translateZ(0);
   backface-visibility: hidden;
+  /* will-change supprimé pour performance scroll */
+}
+
+button:hover {
+  will-change: transform;  /* Uniquement au hover */
 }
 
 button:active {
@@ -268,8 +272,8 @@ button:focus-visible {
   /* Contrôles simplifiés sur très petits écrans */
   button {
     padding: 0.75rem !important;
-    background: rgba(0,0,0,0.7) !important;
-    backdrop-filter: blur(10px) !important;
+    background: rgba(0,0,0,0.9) !important;
+    /* backdrop-filter supprimé pour performance */
   }
 }
 

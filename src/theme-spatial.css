@@ -1,0 +1,340 @@
+/**
+ * THÈME SPATIAL GALACTIQUE
+ * Inspiré par l'univers, les néons et la technologie
+ */
+
+/* ============================================ */
+/* IMPORTS FONTS FUTURISTES */
+/* ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+
+/* ============================================ */
+/* FOND SPATIAL GLOBAL */
+/* ============================================ */
+body {
+  background: #0B0C2A;
+  background-image: 
+    radial-gradient(ellipse at top, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(255, 0, 204, 0.1) 0%, transparent 50%);
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Arrière-plan galactique - Dégradé spatial pour tout le site (sans image) */
+#app {
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0B0C2A 0%, #1a1d3a 50%, #2d1b4e 100%);
+  /* background-attachment: fixed; - désactivé pour performance scroll */
+}
+
+/* Overlay de brume cosmique pour tout le site (optimisé) */
+#app::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 204, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+  /* Animation désactivée pour performance */
+}
+
+/* ============================================ */
+/* HERO GALAXY - Fond d'écran uniquement sur Home.vue */
+/* ============================================ */
+.hero-galaxy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/space-galaxy-background.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+  /* Filter désactivé pour performance */
+}
+
+/* ============================================ */
+/* PARTICULES SPATIALES (ÉTOILES) */
+/* ============================================ */
+.space-stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  /* Box-shadow supprimé pour performance - petites étoiles */
+  animation: star-twinkle 4s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Générer des étoiles aléatoires via JavaScript */
+.star:nth-child(odd) {
+  animation-duration: 3s;
+  animation-delay: 0.5s;
+}
+
+.star:nth-child(even) {
+  animation-duration: 5s;
+  animation-delay: 1s;
+}
+
+.star.large {
+  width: 3px;
+  height: 3px;
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.7);  /* 1 seule ombre simplifiée */
+}
+
+/* ============================================ */
+/* EFFETS NÉON ET GLOW */
+/* ============================================ */
+.neon-glow {
+  text-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 30px currentColor;
+}
+
+.neon-border {
+  border: 1px solid transparent;
+  background: 
+    linear-gradient(#0B0C2A, #0B0C2A) padding-box,
+    linear-gradient(135deg, #8A2BE2, #FF00CC, #00FFFF) border-box;
+  box-shadow: 
+    0 0 20px rgba(138, 43, 226, 0.5),
+    inset 0 0 20px rgba(138, 43, 226, 0.1);
+}
+
+.glow-purple {
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);  /* 1 seule ombre simplifiée */
+}
+
+.glow-magenta {
+  box-shadow: 0 0 30px rgba(255, 0, 204, 0.5);  /* 1 seule ombre simplifiée */
+}
+
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);  /* 1 seule ombre simplifiée */
+}
+
+/* ============================================ */
+/* CARTES FLOTTANTES TRANSPARENTES */
+/* ============================================ */
+.glass-card {
+  background: rgba(26, 29, 58, 0.85);  /* Couleur solide pour performance */
+  /* backdrop-filter désactivé pour performance */
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);  /* 1 seule ombre */
+  transition: transform 0.3s ease, border-color 0.3s ease;  /* Transitions simplifiées */
+}
+
+.glass-card:hover {
+  transform: translateY(-6px);  /* Réduit pour performance */
+  border-color: rgba(255, 0, 204, 0.5);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);  /* 1 seule ombre */
+}
+
+/* ============================================ */
+/* BOUTONS NÉON */
+/* ============================================ */
+.btn-space {
+  position: relative;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(255, 0, 204, 0.2));
+  border: 2px solid #8A2BE2;
+  border-radius: 50px;
+  color: #FFFFFF;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);  /* 1 seule ombre */
+}
+
+.btn-space::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;  /* Réduit de 0.6s */
+}
+
+.btn-space:hover {
+  border-color: #FF00CC;
+  box-shadow: 0 0 35px rgba(255, 0, 204, 0.6);  /* 1 seule ombre */
+  transform: translateY(-2px);
+  will-change: transform;
+}
+
+.btn-space:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+/* ============================================ */
+/* TRAÎNÉES DE COMÈTES AU SURVOL */
+/* ============================================ */
+.comet-trail {
+  position: relative;
+  overflow: hidden;
+}
+
+.comet-trail::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 255, 0.3),  /* Opacité réduite */
+    rgba(255, 0, 204, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;  /* Réduit de 0.8s */
+  pointer-events: none;
+}
+
+.comet-trail:hover::after {
+  left: 100%;
+}
+
+/* ============================================ */
+/* TYPOGRAPHIE FUTURISTE */
+/* ============================================ */
+h1, h2, h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.text-gradient-space {
+  background: linear-gradient(135deg, #8A2BE2, #FF00CC, #00FFFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================ */
+/* ANIMATIONS SPATIALES */
+/* ============================================ */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes glow-pulse-animation {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;  /* Réduit de 1 pour performance */
+  }
+  /* Filter blur supprimé pour performance */
+}
+
+/* ============================================ */
+/* SCROLLBAR SPATIALE */
+/* ============================================ */
+::-webkit-scrollbar {
+  width: 12px;
+  background: rgba(11, 12, 42, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8A2BE2, #FF00CC);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF00CC, #00FFFF);
+  box-shadow: 0 0 20px rgba(255, 0, 204, 1);
+}
+
+/* ============================================ */
+/* RESPONSIVE */
+/* ============================================ */
+@media (max-width: 768px) {
+  /* Optimisations performance mobile */
+  .glass-card {
+    background: rgba(26, 29, 58, 0.95);  /* Plus opaque sur mobile */
+    transition-duration: 0.2s;
+  }
+  
+  .btn-space {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+  }
+  
+  /* Désactiver effets coûteux sur mobile */
+  .glow-purple, .glow-magenta, .glow-cyan {
+    box-shadow: none;
+  }
+  
+  /* Simplifier animations */
+  * {
+    transition-duration: 0.2s !important;
+  }
+}
+
+/* ============================================ */
+/* OPTIMISATION PERFORMANCE */
+/* ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

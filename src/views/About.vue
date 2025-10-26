@@ -3,10 +3,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- En-tête -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          À propos de moi
+        <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-6">
+          À propos <span class="text-gradient-space">de moi</span>
         </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
           Développeur web passionné, je transforme les idées en applications web modernes et performantes
         </p>
       </div>
@@ -15,8 +15,8 @@
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-12">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Développeur Freelance
+            <h2 class="text-3xl font-display font-bold text-white mb-4">
+              Développeur <span class="text-space-cyan">Freelance</span>
             </h2>
             <p class="text-gray-600 dark:text-gray-300 mb-6">
               Fort de <strong>3 ans d'expérience en entreprise</strong> et d'un <strong>Master en développement web</strong>, 
@@ -54,11 +54,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Expérience professionnelle -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-            <svg class="w-6 h-6 mr-2 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-2xl font-display font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-space-magenta" fill="currentColor" viewBox="0 0 24 24">
               <path d="M10 16V8a6 6 0 0 1 12 0v8a1 1 0 0 1-1 1H11a1 1 0 0 1-1-1zM6 16a1 1 0 0 1-1-1V9a1 1 0 0 1 2 0v6a1 1 0 0 1-1 1z"/>
             </svg>
-            Expérience Professionnelle
+            Expérience <span class="text-space-magenta">Professionnelle</span>
           </h2>
           <div class="space-y-6">
             <div class="border-l-4 border-primary-500 pl-4">
@@ -89,11 +89,11 @@
 
         <!-- Formation -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-            <svg class="w-6 h-6 mr-2 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
+          <h2 class="text-2xl font-display font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-space-cyan" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
             </svg>
-            Formation
+            <span class="text-space-cyan">Formation</span>
           </h2>
           <div class="space-y-6">
             <div class="border-l-4 border-primary-500 pl-4">

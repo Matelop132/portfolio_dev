@@ -3,10 +3,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- En-tête -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Mes Services
+        <h1 class="text-5xl md:text-6xl font-display font-bold text-white mb-6">
+          Mes <span class="text-gradient-space">Services</span>
         </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
           Solutions digitales pour développer votre business et atteindre vos objectifs
         </p>
       </div>
@@ -22,7 +22,7 @@
                :class="category.iconBg">
             {{ category.icon }}
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <h3 class="text-xl font-semibold text-white mb-4">
             {{ category.title }}
           </h3>
           <p class="text-gray-600 dark:text-gray-300 mb-6">
@@ -42,8 +42,8 @@
 
       <!-- Section Résultats -->
       <div class="mt-16 bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-          Résultats Obtenus
+        <h2 class="text-3xl font-display font-bold text-white mb-6 text-center">
+          Résultats <span class="text-gradient-space">Obtenus</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="text-center">

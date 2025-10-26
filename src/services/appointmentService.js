@@ -64,14 +64,14 @@ class AppointmentService {
   }
 
   /**
-   * Crée une nouvelle réservation
-   * @param {Object} appointmentData - Données de la réservation
-   * @param {string} appointmentData.slotId - ID du créneau
+   * Crée une nouvelle demande de rendez-vous
+   * @param {Object} appointmentData - Données de la demande
+   * @param {string} appointmentData.date - Date souhaitée (format DD/MM/YYYY)
    * @param {string} appointmentData.name - Nom du client
    * @param {string} appointmentData.email - Email du client
    * @param {string} appointmentData.phone - Téléphone (optionnel)
    * @param {string} appointmentData.message - Message du client
-   * @returns {Promise<Object>} Résultat de la réservation
+   * @returns {Promise<Object>} Résultat de la demande
    */
   async createReservation(appointmentData) {
     try {
@@ -79,8 +79,8 @@ class AppointmentService {
       this.validateReservationData(appointmentData);
 
       const payload = {
-        action: 'createReservation',
-        slotId: appointmentData.slotId,
+        action: 'createAppointment',
+        date: appointmentData.date,
         name: appointmentData.name,
         email: appointmentData.email,
         phone: appointmentData.phone || '',
@@ -88,7 +88,7 @@ class AppointmentService {
       };
 
       if (API_CONFIG.isDevelopment) {
-        console.log('📤 Envoi de la réservation:', payload);
+        console.log('📤 Envoi de la demande de rendez-vous:', payload);
       }
 
       const controller = new AbortController();
@@ -112,15 +112,11 @@ class AppointmentService {
       const data = await response.json();
 
       if (!data.success) {
-        // Gestion des erreurs spécifiques
-        if (data.error?.includes('disponible')) {
-          throw new Error(API_CONFIG.ERROR_MESSAGES.SLOT_UNAVAILABLE);
-        }
-        throw new Error(data.error || 'Erreur lors de la réservation');
+        throw new Error(data.error || 'Erreur lors de l\'envoi de la demande');
       }
 
       if (API_CONFIG.isDevelopment) {
-        console.log('✅ Réservation confirmée:', data);
+        console.log('✅ Demande de rendez-vous envoyée:', data);
       }
 
       return data;
@@ -136,13 +132,19 @@ class AppointmentService {
   }
 
   /**
-   * Valide les données de réservation
+   * Valide les données de demande de rendez-vous
    * @param {Object} data - Données à valider
    * @throws {Error} Si les données sont invalides
    */
   validateReservationData(data) {
-    if (!data.slotId) {
-      throw new Error('Veuillez sélectionner un créneau horaire');
+    if (!data.date) {
+      throw new Error('Veuillez sélectionner une date');
+    }
+
+    // Validation format date DD/MM/YYYY
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (!dateRegex.test(data.date)) {
+      throw new Error('Format de date invalide');
     }
 
     if (!data.name || data.name.trim().length < 2) {

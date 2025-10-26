@@ -24,7 +24,7 @@ const CONFIG = {
   ALLOWED_ORIGINS: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'http://vrhuqfl.cluster021.hosting.ovh.net/' // Ajoutez votre domaine en production
+    'https://votre-domaine.com' // Ajoutez votre domaine en production
   ]
 };
 
@@ -246,7 +246,64 @@ function generateSlots() {
 // ==================== GESTION DES RÉSERVATIONS ====================
 
 /**
- * Crée une nouvelle réservation
+ * Crée une nouvelle demande de rendez-vous (sans créneau horaire prédéfini)
+ */
+function createAppointment(data) {
+  // Validation des données
+  if (!data.date || !data.name || !data.email || !data.message) {
+    throw new Error('Données manquantes (date, name, email, message requis)');
+  }
+  
+  // Validation de l'email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.email)) {
+    throw new Error('Format d\'email invalide');
+  }
+  
+  // Créer l'ID de la demande
+  const appointmentId = `APT_${Date.now()}`;
+  
+  // Ajouter la demande dans la feuille Réservations
+  const sheet = getSheet(CONFIG.SHEET_RESERVATIONS);
+  sheet.appendRow([
+    appointmentId,
+    data.name,
+    data.email,
+    data.phone || '',
+    data.date,
+    'À définir', // Heure à définir plus tard
+    data.message,
+    new Date(),
+    'En attente',
+    'Demande de rendez-vous - date souhaitée : ' + data.date
+  ]);
+  
+  // Colorer la ligne en orange pour indiquer qu'elle est en attente
+  const lastRow = sheet.getLastRow();
+  sheet.getRange(lastRow, 1, 1, 10).setBackground('#ffe0b2');
+  
+  // Envoyer les emails
+  try {
+    sendAppointmentRequestEmail(data, appointmentId);
+    sendAdminAppointmentNotification(data, appointmentId);
+  } catch (emailError) {
+    Logger.log('Erreur envoi email: ' + emailError.toString());
+    // Ne pas bloquer la demande si l'email échoue
+  }
+  
+  return {
+    success: true,
+    appointmentId: appointmentId,
+    message: 'Demande de rendez-vous envoyée avec succès',
+    details: {
+      name: data.name,
+      date: data.date
+    }
+  };
+}
+
+/**
+ * Crée une nouvelle réservation (ancienne méthode avec slotId)
  */
 function createReservation(data) {
   // Validation des données
@@ -409,6 +466,96 @@ function sendAdminNotification(data, date, time, reservationId) {
   });
 }
 
+/**
+ * Envoie un email de confirmation pour une demande de rendez-vous
+ */
+function sendAppointmentRequestEmail(data, appointmentId) {
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
+      <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h1 style="color: #4285f4; margin-bottom: 20px;">📨 Demande de rendez-vous reçue</h1>
+        
+        <p style="font-size: 16px; color: #333;">Bonjour <strong>${data.name}</strong>,</p>
+        
+        <p style="font-size: 16px; color: #333;">
+          Nous avons bien reçu votre demande de rendez-vous.
+        </p>
+        
+        <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h2 style="color: #1976d2; margin-top: 0;">📅 Votre demande</h2>
+          <p style="margin: 10px 0;"><strong>Date souhaitée :</strong> ${data.date}</p>
+          <p style="margin: 10px 0;"><strong>N° de demande :</strong> ${appointmentId}</p>
+        </div>
+        
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #666;">Votre message :</h3>
+          <p style="color: #555; font-style: italic;">${data.message}</p>
+        </div>
+        
+        <p style="font-size: 16px; color: #333;">
+          Je reviendrai vers vous rapidement pour confirmer la disponibilité et l'horaire exact du rendez-vous.
+        </p>
+        
+        <p style="font-size: 14px; color: #666; margin-top: 30px;">
+          Pour toute question, répondez simplement à cet email.
+        </p>
+        
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+        
+        <p style="font-size: 12px; color: #999; text-align: center;">
+          Cet email a été envoyé automatiquement suite à votre demande de rendez-vous.
+        </p>
+      </div>
+    </div>
+  `;
+  
+  MailApp.sendEmail({
+    to: data.email,
+    subject: '📨 Demande de rendez-vous reçue',
+    htmlBody: htmlBody
+  });
+}
+
+/**
+ * Envoie une notification admin pour une demande de rendez-vous
+ */
+function sendAdminAppointmentNotification(data, appointmentId) {
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h1 style="color: #ff9800;">📨 Nouvelle demande de rendez-vous</h1>
+      
+      <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h2>Informations client</h2>
+        <p><strong>Nom :</strong> ${data.name}</p>
+        <p><strong>Email :</strong> ${data.email}</p>
+        <p><strong>Téléphone :</strong> ${data.phone || 'Non renseigné'}</p>
+      </div>
+      
+      <div style="background-color: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h2>Détails de la demande</h2>
+        <p><strong>Date souhaitée :</strong> ${data.date}</p>
+        <p><strong>ID :</strong> ${appointmentId}</p>
+        <p style="color: #856404;"><em>⚠️ Heure à définir - Contacter le client pour confirmer</em></p>
+      </div>
+      
+      <div style="background-color: #e3f2fd; padding: 15px; border-radius: 8px;">
+        <h3>Message du client :</h3>
+        <p>${data.message}</p>
+      </div>
+      
+      <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ff9800;">
+        <p style="margin: 0;"><strong>Action requise :</strong> Contactez le client pour confirmer l'horaire exact du rendez-vous.</p>
+      </div>
+    </div>
+  `;
+  
+  MailApp.sendEmail({
+    to: CONFIG.EMAIL_FROM,
+    subject: '📨 Nouvelle demande de rendez-vous',
+    htmlBody: htmlBody
+  });
+}
+
 // ==================== FORMATAGE ====================
 
 /**
@@ -487,6 +634,11 @@ function doPost(e) {
     // Parser les données JSON
     const data = JSON.parse(e.postData.contents);
     const action = data.action || 'createReservation';
+    
+    if (action === 'createAppointment') {
+      const result = createAppointment(data);
+      return jsonResponse(result);
+    }
     
     if (action === 'createReservation') {
       const result = createReservation(data);

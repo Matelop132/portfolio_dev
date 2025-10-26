@@ -1,26 +1,32 @@
 <template>
-  <div id="app" class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-    <AppHeader />
-    <main class="pt-16">
-      <router-view v-slot="{ Component, route }">
-        <transition
-          :name="getTransitionName(route)"
-          mode="out-in"
-          @enter="onEnter"
-          @leave="onLeave"
-        >
-          <component :is="Component" :key="route.path" />
-        </transition>
-      </router-view>
-    </main>
-    <AppFooter />
+  <div id="app" class="min-h-screen relative">
+    <!-- Étoiles spatiales animées -->
+    <div class="space-stars" ref="starsContainer"></div>
+    
+    <!-- Contenu principal -->
+    <div class="relative z-10">
+      <AppHeader />
+      <main class="pt-16">
+        <router-view v-slot="{ Component, route }">
+          <transition
+            :name="getTransitionName(route)"
+            mode="out-in"
+            @enter="onEnter"
+            @leave="onLeave"
+          >
+            <component :is="Component" :key="route.path" />
+          </transition>
+        </router-view>
+      </main>
+      <AppFooter />
+    </div>
   </div>
 </template>
 
 <script>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useThemeStore } from '@/stores/theme'
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/components/AppHeaderSpatial.vue'
 import AppFooter from '@/components/AppFooter.vue'
 
 export default {
@@ -31,10 +37,36 @@ export default {
   },
   setup() {
     const themeStore = useThemeStore()
+    const starsContainer = ref(null)
+
+    // Générer les étoiles spatiales (optimisé pour performance)
+    const generateStars = () => {
+      if (!starsContainer.value) return
+      
+      const numberOfStars = 50  // Réduit de 150 à 50 pour performance
+      
+      for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div')
+        star.className = `star ${Math.random() > 0.85 ? 'large' : ''}`
+        
+        // Position aléatoire
+        star.style.left = `${Math.random() * 100}%`
+        star.style.top = `${Math.random() * 100}%`
+        
+        // Délai d'animation aléatoire
+        star.style.animationDelay = `${Math.random() * 4}s`
+        star.style.animationDuration = `${3 + Math.random() * 3}s`
+        
+        starsContainer.value.appendChild(star)
+      }
+    }
 
     onMounted(() => {
       // Initialiser le thème au démarrage
       themeStore.initializeTheme()
+      
+      // Générer les étoiles
+      generateStars()
     })
 
     const getTransitionName = (route) => {
@@ -47,11 +79,12 @@ export default {
     }
 
     const onEnter = (el) => {
-      // Animation d'entrée
+      // Animation d'entrée (optimisée sans force reflow)
       el.style.opacity = '0'
-      el.offsetHeight // Force reflow
-      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease'
-      el.style.opacity = '1'
+      requestAnimationFrame(() => {
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
+        el.style.opacity = '1'
+      })
     }
 
     const onLeave = (el, done) => {
@@ -63,6 +96,7 @@ export default {
 
     return {
       themeStore,
+      starsContainer,
       getTransitionName,
       onEnter,
       onLeave,
@@ -80,11 +114,6 @@ export default {
 /* Scroll smooth */
 html {
   scroll-behavior: smooth;
-}
-
-/* Amélioration des animations */
-* {
-  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 /* Transitions de pages */

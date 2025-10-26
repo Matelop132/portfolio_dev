@@ -3,6 +3,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import './style.css'
+import './theme-spatial.css' // Thème spatial galactique
+import './performance-optimizations.css' // Optimisations de performance
 
 // Création de l'application
 const app = createApp(App)

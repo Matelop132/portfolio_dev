@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import About from '@/views/About.vue'
-import Skills from '@/views/Skills.vue'
-import Projects from '@/views/Projects.vue'
-import Contact from '@/views/Contact.vue'
+
+// Lazy loading des composants pour améliorer les performances
+// Chaque route sera dans un chunk séparé et chargée à la demande
+const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
+const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
+const Skills = () => import(/* webpackChunkName: "skills" */ '@/views/Skills.vue')
+const Projects = () => import(/* webpackChunkName: "projects" */ '@/views/Projects.vue')
+const Contact = () => import(/* webpackChunkName: "contact" */ '@/views/Contact.vue')
 
 const routes = [
   {

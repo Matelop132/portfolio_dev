@@ -1,0 +1,73 @@
+/**
+ * OPTIMISATIONS DE PERFORMANCE
+ * Désactive les animations excessives qui ralentissent le site
+ */
+
+/* Désactiver les particules flottantes (6 animations lourdes) */
+.floating-particles {
+  display: none !important;
+}
+
+/* Désactiver les orbites tournantes (3 animations GPU intensives) */
+.orbital-container {
+  display: none !important;
+}
+
+/* Désactiver les ondes d'arrière-plan (3 animations) */
+.wave-background {
+  display: none !important;
+}
+
+/* Désactiver les étoiles flottantes (4 animations) */
+.floating-stars {
+  display: none !important;
+}
+
+/* Simplifier l'animation du badge - garder seulement un effet subtil */
+.badge-pulse {
+  animation: none !important;
+}
+
+/* Simplifier le shimmer */
+.shimmer-effect {
+  animation-duration: 6s !important; /* Ralentir pour moins de CPU */
+}
+
+/* Réduire les animations des icônes */
+.icon-bounce {
+  animation: none !important;
+}
+
+.icon-rotate {
+  animation: none !important;
+}
+
+/* Garder seulement le pulse de qualité car il est léger */
+.quality-pulse {
+  animation-duration: 3s !important; /* Ralentir */
+}
+
+/* Optimisation pour le gradient animé - ralentir */
+.gradient-animated {
+  animation-duration: 6s !important; /* Au lieu de 3s */
+}
+
+/* Désactiver will-change sauf sur les éléments qui en ont vraiment besoin */
+.floating-particles,
+.orbital-container,
+.wave-background,
+.floating-stars,
+.particle,
+.orbit-particle,
+.star {
+  will-change: auto !important;
+}
+
+/* Garder will-change uniquement sur les transitions de pages */
+.fade-enter-active,
+.fade-leave-active,
+.slide-up-enter-active,
+.slide-up-leave-active {
+  will-change: transform, opacity;
+}
+
